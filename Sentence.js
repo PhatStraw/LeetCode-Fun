@@ -18,43 +18,43 @@
 //   "out word.    "
 // ]
 
+//Each word has a space character(even indexes), besides the last word.
+//push word and space, if not last word
+//check length of array + length of next word.
+//if > then length.
+//go back through arr and add extra spaces
 
-function createSentence(words, length){
-    let currentSen = ""
-    let currentWord = words[0]
-    let isValid = ""
-    let text = "";
-    let currentIndex = 0
-    let newWords = []
-    while(currentWord !== words[words.length-1]){
-      if(words[currentIndex] !== words[words.length-1]){
-      currentSen += words[currentIndex] + " "
-      }else{
-      currentSen += words[currentIndex]
-      }
-      isValid = currentSen + words[currentIndex + 1]
-      console.log(currentSen, currentSen.length, "=============")
-      currentWord = words[currentIndex]
-      if(isValid.length < length){
-        const spaces = currentSen.length - length
-        let added = 0
-        for(var i=0; i< length; i++){
-          text += currentSen[i];
-          if(currentSen[i] === " " && spaces != added){
-            text += " "
-            added++
-          }
-          if(text.length === length){
-            newWords.push(text)
-          }
-          // console.log(text, text.length, "2===============")
+function createSen(words, length) {
+    const newArr = []
+    let curStr = ""
+    for (var i = 0; i < words.length; i++) {
+        if (words[i + 1]) {
+            if (curStr.length + words[i].length + 1 > length && curStr.length + words[i].length <= length) {
+                curStr += words[i]
+            } else if (curStr.length + words[i].length + 1 < length) {
+                curStr += words[i] + " "
+            }
+            if (curStr.length + words[i + 1].length > length) {
+                let spaces = length - curStr.length
+                for(var j=0; j <= curStr.length; j++) {
+                    if (curStr[j] === " " && spaces !== 0) {
+                        curStr[j] = "  "
+                        spaces--
+                    }
+                }
+                newArr.push(curStr)
+                curStr = ""
+            }
         }
-      }else if(isValid.length === length){
-        newWords.push(currentSen)
-      }
-      currentIndex++
     }
-    return newWords
-  }
-  
-  console.log(createSentence(["say","you", "had", "a"], 13))
+    return newArr
+}
+
+console.log(createSen(
+    [
+        "say", "you", "had", "a",
+        "sentence", "of", "words", "that",
+        "we'll", "use", "to", "test", "this",
+        "a", "formatting", "out", "word."
+    ],
+    13))
